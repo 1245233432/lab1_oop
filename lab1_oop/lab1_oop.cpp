@@ -78,7 +78,92 @@ int test_normal() {
 
 	switch (switcher) {
 		case 1: {
-			 
+
+			x = 0.0; mu = 0.0; lam = 1.0; nu = 0.5;
+			cout << "1. Standart test. Data:" << endl;
+			cout << "Argument x = " << x << endl;
+			cout << "Shape parameter ν = " << nu << endl;
+			cout << "Shift parameter μ = " << mu << endl;
+			cout << "Scale parameter λ = " << lam << endl << endl;
+
+			cout << "Result:" << endl;
+			cout << "Density:           f(x) = " << distribution::get_density(x, nu, mu, lam) 
+				<< "; expected: f0 = 0.223"
+				<< endl;
+			cout << "Expected value:    M[ξ] = " << distribution::get_expected_value(nu, mu, lam) 
+				<< "; expected: " << mu 
+				<< endl;
+			cout << "Dispersion:        D[ξ] = " << distribution::get_dispersion(nu, mu, lam)
+				<< "; expected: σ^2 = 8.08"
+				<< endl;
+			cout << "Asymmetry coef.:     γ1 = " << distribution::get_asymmetry(nu, mu, lam)
+				<< "; expected: γ1 = 0.0" 
+				<< endl;
+			cout << "Excess coef.:        γ2 = " << distribution::get_excess(nu, mu, lam)
+				<< "; expected: γ2 = 2.94" 
+				<< endl;
+			cout << "P{x in central interval} = " << distribution::get_P(nu)
+				<< "; expected: 0.214" 
+				<< endl;
+
+
+			lam = 2.0; nu = 1.5;
+			cout << "2. Scale test. Data:" << endl;
+			cout << "Argument x = " << x << endl;
+			cout << "Shape parameter ν = " << nu << endl;
+			cout << "Shift parameter μ = " << mu << endl;
+			cout << "Scale parameter λ = " << lam << endl << endl;
+
+			cout << "Result:" << endl;
+			cout << "Density:           f(x) = " << distribution::get_density(x, nu, mu, lam)
+				<< "; expected: f0 = 0.384"
+				<< endl;
+			cout << "Expected value:    M[ξ] = " << distribution::get_expected_value(nu, mu, lam)
+				<< "; expected: " << mu
+				<< endl;
+			cout << "Dispersion:        D[ξ] = " << distribution::get_dispersion(nu, mu, lam)
+				<< "; expected: σ^2 = 1.31"
+				<< endl;
+			cout << "Asymmetry coef.:     γ1 = " << distribution::get_asymmetry(nu, mu, lam)
+				<< "; expected: γ1 = 0.0"
+				<< endl;
+			cout << "Excess coef.:        γ2 = " << distribution::get_excess(nu, mu, lam)
+				<< "; expected: γ2 = 1.30"
+				<< endl;
+			cout << "P{x in central interval} = " << distribution::get_P(nu)
+				<< "; expected: 0.834"
+				<< endl;
+
+
+			mu = 2.0; lam = 2.0; nu = 3.0; x = mu;
+			cout << "3. Shift-scale test. Data:" << endl;
+			cout << "Argument x = μ = " << x << endl;
+			cout << "Shape parameter ν = " << nu << endl;
+			cout << "Shift parameter μ = " << mu << endl;
+			cout << "Scale parameter λ = " << lam << endl << endl;
+
+			cout << "Result:" << endl;
+			cout << "Density:           f(x) = " << distribution::get_density(x, nu, mu, lam)
+				<< "; expected: f0 = 0.399"
+				<< endl;
+			cout << "Expected value:    M[ξ] = " << distribution::get_expected_value(nu, mu, lam)
+				<< "; expected: " << mu
+				<< endl;
+			cout << "Dispersion:        D[ξ] = " << distribution::get_dispersion(nu, mu, lam)
+				<< "; expected: σ^2 = 1.00"
+				<< endl;
+			cout << "Asymmetry coef.:     γ1 = " << distribution::get_asymmetry(nu, mu, lam)
+				<< "; expected: γ1 = 0.0"
+				<< endl;
+			cout << "Excess coef.:        γ2 = " << distribution::get_excess(nu, mu, lam)
+				<< "; expected: γ2 = 0.04"
+				<< endl;
+			cout << "P{x in central interval} = " << distribution::get_P(nu)
+				<< "; expected: 0.997"
+				<< endl;
+			
+			return 1;
 	}
+
 	}
 }
