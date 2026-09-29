@@ -14,7 +14,7 @@
 
 int test_normal();
 int test_mixed();
-//int test_empiric();
+int test_empiric();
 
 using namespace std;
 
@@ -64,7 +64,7 @@ int main() {
 		switch (switcher) {
 		case 1: test_normal(); break;
 		case 2: test_mixed(); break;
-		//case 3: test_empiric(); break;
+		case 3: test_empiric(); break;
 		case 4: exit_flag = true; break;
 		default: cout << "Wrong input" << endl; break;
 		}
@@ -408,3 +408,7 @@ int test_mixed() {
 			return 0;
 	}
 }
+
+/*int test_empiric() {
+
+}*/
