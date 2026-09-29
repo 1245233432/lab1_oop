@@ -18,6 +18,23 @@ int test_mixed();
 
 using namespace std;
 
+static void plot_density(int flag, double x, double nu1, double mu1, double lam1, double nu2, double mu2, double lam2, double p) {
+	ostringstream cmd;
+	cmd << "python plot.py "
+		<< flag << " "
+		<< x << " "
+		<< nu1 << " " << mu1 << " " << lam1 << " "
+		<< nu2 << " " << mu2 << " " << lam2 << " "
+		<< p;
+	cout << "Building density plot..." << endl;
+	int ret = system(cmd.str().c_str());
+	if (ret != 0) {
+		cout << "Warning: plot.py returned code " << ret
+			<< " (is python3/matplotlib available? is plot.py in cwd?)" << endl;
+	}
+}
+
+
 int main() {
 	srand(static_cast<unsigned int>(time(nullptr)));
 	int switcher = -1;
@@ -49,7 +66,7 @@ int main() {
 		case 2: test_mixed(); break;
 		//case 3: test_empiric(); break;
 		case 4: exit_flag = true; break;
-		deafult: cout << "Wrong input" << endl; break;
+		default: cout << "Wrong input" << endl; break;
 		}
 	}
 	return 0;
@@ -82,109 +99,120 @@ int test_normal() {
 			x = 0.0; mu = 0.0; lam = 1.0; nu = 0.5;
 			cout << "1. Standart test. Data:" << endl;
 			cout << "Argument x = " << x << endl;
-			cout << "Shape parameter ν = " << nu << endl;
-			cout << "Shift parameter μ = " << mu << endl;
-			cout << "Scale parameter λ = " << lam << endl << endl;
+			cout << "Shape parameter nu = " << nu << endl;
+			cout << "Shift parameter mu = " << mu << endl;
+			cout << "Scale parameter lambda = " << lam << endl << endl;
 
 			cout << "Result:" << endl;
-			cout << "Density:           f(x) = " << distribution::get_density(x, nu, mu, lam)
+			cout << "Density:             f(x) = " << distribution::get_density(x, nu, mu, lam)
 				<< "; expected: f0 = 0.223"
 				<< endl;
-			cout << "Expected value:    M[ξ] = " << distribution::get_expected_value(nu, mu, lam)
+			cout << "Expected value:    M[ksi] = " << distribution::get_expected_value(nu, mu, lam)
 				<< "; expected: " << mu
 				<< endl;
-			cout << "Dispersion:        D[ξ] = " << distribution::get_dispersion(nu, mu, lam)
-				<< "; expected: σ^2 = 8.08"
+			cout << "Dispersion:        D[ksi] = " << distribution::get_dispersion(nu, mu, lam)
+				<< "; expected: sigma^2 = 8.08"
 				<< endl;
-			cout << "Asymmetry coef.:     γ1 = " << distribution::get_asymmetry(nu, mu, lam)
-				<< "; expected: γ1 = 0.0"
+			cout << "Asymmetry coef.:   gamma1 = " << distribution::get_asymmetry(nu, mu, lam)
+				<< "; expected: gamma1 = 0.0"
 				<< endl;
-			cout << "Excess coef.:        γ2 = " << distribution::get_excess(nu, mu, lam)
-				<< "; expected: γ2 = 2.94"
+			cout << "Excess coef.:      gamma2 = " << distribution::get_excess(nu, mu, lam)
+				<< "; expected: gamma2 = 2.94"
 				<< endl;
-			cout << "P{x in central interval} = " << distribution::get_P(nu)
+			cout << "P{x in central interval} =  " << distribution::get_P(nu)
 				<< "; expected: 0.214"
-				<< endl;
+				<< endl << endl;
+
+			plot_density(0, x, nu, mu, lam, 0, 0, 0, 0);
+
 
 
 			lam = 2.0; nu = 1.5;
 			cout << "2. Scale test. Data:" << endl;
 			cout << "Argument x = " << x << endl;
-			cout << "Shape parameter ν = " << nu << endl;
-			cout << "Shift parameter μ = " << mu << endl;
-			cout << "Scale parameter λ = " << lam << endl << endl;
+			cout << "Shape parameter nu = " << nu << endl;
+			cout << "Shift parameter mu = " << mu << endl;
+			cout << "Scale parameter lambda = " << lam << endl << endl;
 
 			cout << "Result:" << endl;
-			cout << "Density:            f(x) = " << distribution::get_density(x, nu, mu, lam)
-				<< "; expected: f0 = 0.384"
+			cout << "Density:             f(x) = " << distribution::get_density(x, nu, mu, lam)
+				<< "; expected: f0/lambda = 0.192"
 				<< endl;
-			cout << "Expected value:     M[ξ] = " << distribution::get_expected_value(nu, mu, lam)
+			cout << "Expected value:    M[ksi] = " << distribution::get_expected_value(nu, mu, lam)
 				<< "; expected: " << mu
 				<< endl;
-			cout << "Dispersion:         D[ξ] = " << distribution::get_dispersion(nu, mu, lam)
-				<< "; expected: σ^2 = 1.31"
+			cout << "Dispersion:        D[ksi] = " << distribution::get_dispersion(nu, mu, lam)
+				<< "; expected: sigma^2 * lambda^2 = 5.24"
 				<< endl;
-			cout << "Asymmetry coef.:      γ1 = " << distribution::get_asymmetry(nu, mu, lam)
-				<< "; expected: γ1 = 0.0"
+			cout << "Asymmetry coef.:   gamma1 = " << distribution::get_asymmetry(nu, mu, lam)
+				<< "; expected: gamma1 = 0.0"
 				<< endl;
-			cout << "Excess coef.:         γ2 = " << distribution::get_excess(nu, mu, lam)
-				<< "; expected: γ2 = 1.30"
+			cout << "Excess coef.:      gamma2 = " << distribution::get_excess(nu, mu, lam)
+				<< "; expected: gamma2 = 1.30"
 				<< endl;
-			cout << "P{x in central interval} = " << distribution::get_P(nu)
+			cout << "P{x in central interval} =  " << distribution::get_P(nu)
 				<< "; expected: 0.834"
-				<< endl;
+				<< endl << endl;
+
+			plot_density(0, x, nu, mu, lam, 0, 0, 0, 0);
+
 
 
 			mu = 2.0; lam = 2.0; nu = 3.0; x = mu;
 			cout << "3. Shift-scale test. Data:" << endl;
-			cout << "Argument x = μ = " << x << endl;
-			cout << "Shape parameter ν = " << nu << endl;
-			cout << "Shift parameter μ = " << mu << endl;
-			cout << "Scale parameter λ = " << lam << endl << endl;
+			cout << "Argument x = mu = " << x << endl;
+			cout << "Shape parameter nu = " << nu << endl;
+			cout << "Shift parameter mu = " << mu << endl;
+			cout << "Scale parameter lambda = " << lam << endl << endl;
 
 			cout << "Results:" << endl;
-			cout << "Density:            f(x) = " << distribution::get_density(x, nu, mu, lam)
-				<< "; expected: f0 = 0.399"
+			cout << "Density:             f(x) = " << distribution::get_density(x, nu, mu, lam)
+				<< "; expected: f0/lambda = 0.1995"
 				<< endl;
-			cout << "Expected value:     M[ξ] = " << distribution::get_expected_value(nu, mu, lam)
+			cout << "Expected value:    M[ksi] = " << distribution::get_expected_value(nu, mu, lam)
 				<< "; expected: " << mu
 				<< endl;
-			cout << "Dispersion:         D[ξ] = " << distribution::get_dispersion(nu, mu, lam)
-				<< "; expected: σ^2 = 1.00"
+			cout << "Dispersion:        D[ksi] = " << distribution::get_dispersion(nu, mu, lam)
+				<< "; expected: sigma^2 * lambda^2 = 4.00"
 				<< endl;
-			cout << "Asymmetry coef.:      γ1 = " << distribution::get_asymmetry(nu, mu, lam)
-				<< "; expected: γ1 = 0.0"
+			cout << "Asymmetry coef.:   gamma1 = " << distribution::get_asymmetry(nu, mu, lam)
+				<< "; expected: gamma1 = 0.0"
 				<< endl;
-			cout << "Excess coef.:         γ2 = " << distribution::get_excess(nu, mu, lam)
-				<< "; expected: γ2 = 0.04"
+			cout << "Excess coef.:      gamma2 = " << distribution::get_excess(nu, mu, lam)
+				<< "; expected: gamma2 = 0.04"
 				<< endl;
-			cout << "P{x in central interval} = " << distribution::get_P(nu)
+			cout << "P{x in central interval} =  " << distribution::get_P(nu)
 				<< "; expected: 0.997"
 				<< endl;
+
+			plot_density(0, x, nu, mu, lam, 0, 0, 0, 0);
 
 			return 1;
 		}
 		case 2: {
 			cout << "Enter value of x: "; cin >> x;
-			cout << "Enter value of shape parameter ν (ν > 0): "; cin >> nu;
+			cout << "Enter value of shape parameter nu (nu > 0): "; cin >> nu;
 			if (nu <= 0) {
-				cout << "Incorrect value of ν (must be grater then 0)";
+				cout << "Incorrect value of nu (must be grater then 0)";
 				return 0;
 			}
-			cout << "Enter value of shift parameter μ: "; cin >> mu;
-			cout << "Enter value of scale parameter λ (λ > 0): "; cin >> lam;
+			cout << "Enter value of shift parameter mu: "; cin >> mu;
+			cout << "Enter value of scale parameter lambda (lambda > 0): "; cin >> lam;
 			if (lam <= 0) {
-				cout << "Incorrect value of λ (must be grater then 0)";
+				cout << "Incorrect value of lambda (must be grater then 0)";
 				return 0;
 			}
 
-			cout << "Result:" << endl;
-			cout << "Density:            f(x) = " << distribution::get_density(x, nu, mu, lam) << endl;
-			cout << "Expected value:     M[ξ] = " << distribution::get_expected_value(nu, mu, lam) << endl;
-			cout << "Dispersion:         D[ξ] = " << distribution::get_dispersion(nu, mu, lam) << endl;
-			cout << "Asymmetry coef.:      γ1 = " << distribution::get_asymmetry(nu, mu, lam) << endl;
-			cout << "Excess coef.:         γ2 = " << distribution::get_excess(nu, mu, lam) << endl;
-			cout << "P{x in central interval} = " << distribution::get_P(nu) << endl;
+			cout << endl << "Result:" << endl;
+			cout << "Density:              f(x) = " << distribution::get_density(x, nu, mu, lam) << endl;
+			cout << "Expected value:     M[ksi] = " << distribution::get_expected_value(nu, mu, lam) << endl;
+			cout << "Dispersion:         D[ksi] = " << distribution::get_dispersion(nu, mu, lam) << endl;
+			cout << "Asymmetry coef.:    gamma1 = " << distribution::get_asymmetry(nu, mu, lam) << endl;
+			cout << "Excess coef.:       gamma2 = " << distribution::get_excess(nu, mu, lam) << endl;
+			cout << "P{x in central interval}  =  " << distribution::get_P(nu) << endl << endl;
+
+			plot_density(0, x, nu, mu, lam, 0, 0, 0, 0);
+			return 1;
 		}
 
 		case 3: {
@@ -221,90 +249,102 @@ int test_mixed() {
 	switch (switcher) {
 		case 1: {
 			mu1 = mu2 = x = 1.0; lam1 = lam2 = 2.0; nu1 = nu2 = 1.5; p = 0.3;
-			cout << "Trivial case. Data:" << endl;
+			cout << endl << "Trivial case. Data:" << endl;
 			cout << "Argument x = " << x << endl;
-			cout << "Shape parameters ν1 = ν2 = " << nu1 << endl;
-			cout << "Shift parameters μ1 = μ2 = " << mu1 << endl;
-			cout << "Scale parameters λ1 = λ2 = " << lam1 << endl;
+			cout << "Shape parameters nu1 = nu2 = " << nu1 << endl;
+			cout << "Shift parameters mu1 = mu2 = " << mu1 << endl;
+			cout << "Scale parameters lambda1 = lambda2 = " << lam1 << endl;
 			cout << "Mixture parameter p = " << p << endl << endl;
 
 			cout << "Results:" << endl;
-			cout << "Density:            f(x) = " 
+			cout << "Density:              f(x) = " 
 				<< mix_distribution::get_density(x, nu1, mu1, lam1, nu2, mu2, lam2, p) << endl;
-			cout << "Expected value:     M[ξ] = " 
+			cout << "Expected value:     M[ksi] = " 
 				<< mix_distribution::get_expected_value(nu1, mu1, lam1, nu2, mu2, lam2, p) << endl;
-			cout << "Dispersion:         D[ξ] = " 
+			cout << "Dispersion:         D[ksi] = " 
 				<< mix_distribution::get_dispersion(nu1, mu1, lam1, nu2, mu2, lam2, p) << endl;
-			cout << "Asymmetry coef.:      γ1 = " 
+			cout << "Asymmetry coef.:    gamma1 = " 
 				<< mix_distribution::get_asymmetry(nu1, mu1, lam1, nu2, mu2, lam2, p) << endl;
-			cout << "Excess coef.:         γ2 = " 
-				<< mix_distribution::get_excess(nu1, mu1, lam1, nu2, mu2, lam2, p) << endl;
+			cout << "Excess coef.:       gamma2 = " 
+				<< mix_distribution::get_excess(nu1, mu1, lam1, nu2, mu2, lam2, p) << endl << endl;
+
+			plot_density(1, x, nu1, mu1, lam1, nu2, mu2, lam2, p);
+
 
 			mu1 = 0.0; mu2 = 2.0; lam1 = lam2 = 1.0; nu1 = nu2 = 2.0; p = 0.75; x = 0.0;
 			cout << "Shift transformation. Data:" << endl;
 			cout << "Argument x = " << x << endl;
-			cout << "Shape parameters ν1 = ν2 = " << nu1 << endl;
-			cout << "Shift parameters μ1 = μ2 = " << mu1 << endl;
-			cout << "Scale parameters λ1 = λ2 = " << lam1 << endl;
+			cout << "Shape parameters nu1 = nu2 = " << nu1 << endl;
+			cout << "Shift parameters mu1 = mu2 = " << mu1 << endl;
+			cout << "Scale parameters lambda1 = lambda2 = " << lam1 << endl;
 			cout << "Mixture parameter p = " << p << endl << endl;
 
 			cout << "Results:" << endl;
-			cout << "Density:            f(x) = " 
+			cout << "Density:             f(x) = " 
 				<< mix_distribution::get_density(x, nu1, mu1, lam1, nu2, mu2, lam2, p) << endl;
-			cout << "Expected value:     M[ξ] = " 
+			cout << "Expected value:    M[ksi] = " 
 				<< mix_distribution::get_expected_value(nu1, mu1, lam1, nu2, mu2, lam2, p) 
 				<< "; expected: 1.5"
 				<< endl;
-			cout << "Dispersion:         D[ξ] = " 
+			cout << "Dispersion:        D[ksi] = " 
 				<< mix_distribution::get_dispersion(nu1, mu1, lam1, nu2, mu2, lam2, p) << endl;
-			cout << "Asymmetry coef.:      γ1 = " 
+			cout << "Asymmetry coef.:   gamma1 = " 
 				<< mix_distribution::get_asymmetry(nu1, mu1, lam1, nu2, mu2, lam2, p) << endl;
-			cout << "Excess coef.:         γ2 = " 
-				<< mix_distribution::get_excess(nu1, mu1, lam1, nu2, mu2, lam2, p) << endl;
+			cout << "Excess coef.:      gamma2 = " 
+				<< mix_distribution::get_excess(nu1, mu1, lam1, nu2, mu2, lam2, p) << endl << endl;
+
+			plot_density(1, x, nu1, mu1, lam1, nu2, mu2, lam2, p);
+
 
 			mu1 = mu2 = 0.0; lam1 = 1.0; lam2 = 3.0; nu1 = nu2 = 2.5; p = 0.5;
 			cout << "Scale transformation. Data:" << endl;
 			cout << "Argument x = " << x << endl;
-			cout << "Shape parameters ν1 = ν2 = " << nu1 << endl;
-			cout << "Shift parameters μ1 = μ2 = " << mu1 << endl;
-			cout << "Scale parameters λ1 = λ2 = " << lam1 << endl;
+			cout << "Shape parameters nu1 = nu2 = " << nu1 << endl;
+			cout << "Shift parameters mu1 = mu2 = " << mu1 << endl;
+			cout << "Scale parameters lambda1 = lambda2 = " << lam1 << endl;
 			cout << "Mixture parameter p = " << p << endl << endl;
 
 			cout << "Results:" << endl;
-			cout << "Density:            f(x) = "
+			cout << "Density:             f(x) = "
 				<< mix_distribution::get_density(x, nu1, mu1, lam1, nu2, mu2, lam2, p) << endl;
-			cout << "Expected value:     M[ξ] = "
+			cout << "Expected value:    M[ksi] = "
 				<< mix_distribution::get_expected_value(nu1, mu1, lam1, nu2, mu2, lam2, p)
 				<< "; expected: 0.0" << endl;
-			cout << "Dispersion:         D[ξ] = "
+			cout << "Dispersion:        D[ksi] = "
 				<< mix_distribution::get_dispersion(nu1, mu1, lam1, nu2, mu2, lam2, p) << endl;
-			cout << "Asymmetry coef.:      γ1 = "
+			cout << "Asymmetry coef.:   gamma1 = "
 				<< mix_distribution::get_asymmetry(nu1, mu1, lam1, nu2, mu2, lam2, p) 
 				<< "; expected: 0.0" << endl;
-			cout << "Excess coef.:         γ2 = "
-				<< mix_distribution::get_excess(nu1, mu1, lam1, nu2, mu2, lam2, p) << endl;
+			cout << "Excess coef.:      gamma2 = "
+				<< mix_distribution::get_excess(nu1, mu1, lam1, nu2, mu2, lam2, p) << endl << endl;
+
+			plot_density(1, x, nu1, mu1, lam1, nu2, mu2, lam2, p);
+
 
 			mu1 = mu2 = 0.0; lam1 = lam2 = 1.0; nu1 = 1.0; nu2 = 2.0; p = 0.5;
 			cout << "Different shape transformation. Data:" << endl;
 			cout << "Argument x = " << x << endl;
-			cout << "Shape parameters ν1 = ν2 = " << nu1 << endl;
-			cout << "Shift parameters μ1 = μ2 = " << mu1 << endl;
-			cout << "Scale parameters λ1 = λ2 = " << lam1 << endl;
+			cout << "Shape parameters nu1 = nu2 = " << nu1 << endl;
+			cout << "Shift parameters mu1 = mu2 = " << mu1 << endl;
+			cout << "Scale parameters lambda1 = lambda2 = " << lam1 << endl;
 			cout << "Mixture parameter p = " << p << endl << endl;
 
 			cout << "Results:" << endl;
-			cout << "Density:            f(x) = "
+			cout << "Density:             f(x) = "
 				<< mix_distribution::get_density(x, nu1, mu1, lam1, nu2, mu2, lam2, p) << endl;
-			cout << "Expected value:     M[ξ] = "
+			cout << "Expected value:    M[ksi] = "
 				<< mix_distribution::get_expected_value(nu1, mu1, lam1, nu2, mu2, lam2, p)
 				<< "; expected: 0.0" << endl;
-			cout << "Dispersion:         D[ξ] = "
+			cout << "Dispersion:        D[ksi] = "
 				<< mix_distribution::get_dispersion(nu1, mu1, lam1, nu2, mu2, lam2, p) << endl;
-			cout << "Asymmetry coef.:      γ1 = "
+			cout << "Asymmetry coef.:   gamma1 = "
 				<< mix_distribution::get_asymmetry(nu1, mu1, lam1, nu2, mu2, lam2, p)
 				<< "; expected: 0.0" << endl;
-			cout << "Excess coef.:         γ2 = "
+			cout << "Excess coef.:      gamma2 = "
 				<< mix_distribution::get_excess(nu1, mu1, lam1, nu2, mu2, lam2, p) << endl;
+
+			plot_density(1, x, nu1, mu1, lam1, nu2, mu2, lam2, p);
+
 
 			return 1;
 		}
@@ -312,30 +352,30 @@ int test_mixed() {
 		case 2: {
 			cout << "Enter value of x: "; cin >> x;
 
-			cout << "Enter value of shape parameter ν1 (ν1 > 0): "; cin >> nu1;
+			cout << "Enter value of shape parameter nu1 (nu1 > 0): "; cin >> nu1;
 			if (nu1 <= 0) {
-				cout << "Incorrect value of ν1 (must be grater then 0)" << endl;
+				cout << "Incorrect value of nu1 (must be grater then 0)" << endl;
 				return 0;
 			}
 
-			cout << "Enter value of shape parameter ν2 (ν2 > 0): "; cin >> nu2;
+			cout << "Enter value of shape parameter nu2 (nu2 > 0): "; cin >> nu2;
 			if (nu2 <= 0) {
-				cout << "Incorrect value of ν2 (must be grater then 0)" << endl;
+				cout << "Incorrect value of nu2 (must be grater then 0)" << endl;
 				return 0;
 			}
 
-			cout << "Enter value of shift parameter μ1: "; cin >> mu1;
-			cout << "Enter value of shift parameter μ2: "; cin >> mu2;
+			cout << "Enter value of shift parameter mu1: "; cin >> mu1;
+			cout << "Enter value of shift parameter mu2: "; cin >> mu2;
 
-			cout << "Enter value of scale parameter λ1 (λ1 > 0): "; cin >> lam1;
+			cout << "Enter value of scale parameter lambda1 (lambda1 > 0): "; cin >> lam1;
 			if (lam1 <= 0) {
-				cout << "Incorrect value of λ1 (must be grater then 0)";
+				cout << "Incorrect value of lambda1 (must be grater then 0)";
 				return 0;
 			}
 
-			cout << "Enter value of scale parameter λ2 (λ2 > 0): "; cin >> lam2;
+			cout << "Enter value of scale parameter lambda2 (lambda2 > 0): "; cin >> lam2;
 			if (lam2 <= 0) {
-				cout << "Incorrect value of λ2 (must be grater then 0)";
+				cout << "Incorrect value of lambda2 (must be grater then 0)";
 				return 0;
 			}
 
@@ -346,16 +386,19 @@ int test_mixed() {
 			}
 
 			cout << "Results:" << endl;
-			cout << "Density:            f(x) = "
+			cout << "Density:             f(x) = "
 				<< mix_distribution::get_density(x, nu1, mu1, lam1, nu2, mu2, lam2, p) << endl;
-			cout << "Expected value:     M[ξ] = "
+			cout << "Expected value:    M[ksi] = "
 				<< mix_distribution::get_expected_value(nu1, mu1, lam1, nu2, mu2, lam2, p) << endl;
-			cout << "Dispersion:         D[ξ] = "
+			cout << "Dispersion:        D[ksi] = "
 				<< mix_distribution::get_dispersion(nu1, mu1, lam1, nu2, mu2, lam2, p) << endl;
-			cout << "Asymmetry coef.:      γ1 = "
+			cout << "Asymmetry coef.:   gamma1 = "
 				<< mix_distribution::get_asymmetry(nu1, mu1, lam1, nu2, mu2, lam2, p) << endl;
-			cout << "Excess coef.:         γ2 = "
-				<< mix_distribution::get_excess(nu1, mu1, lam1, nu2, mu2, lam2, p) << endl;
+			cout << "Excess coef.:      gamma2 = "
+				<< mix_distribution::get_excess(nu1, mu1, lam1, nu2, mu2, lam2, p) << endl << endl;
+
+			plot_density(1, x, nu1, mu1, lam1, nu2, mu2, lam2, p);
+			return 1;
 		}
 
 		case 3: {

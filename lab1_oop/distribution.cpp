@@ -121,7 +121,7 @@ namespace distribution {
 		}
 
 		double k = get_K(nu);
-		double sigma = 1.0 + (2.0 * phi(nu) * (nu * nu + 2.0) / nu * nu * nu * k);
+		double sigma = 1.0 + ((2.0 * phi(nu) * (nu * nu + 2.0)) / (nu * nu * nu * k));
 
 		return lam * lam * sigma;
 	}
@@ -146,14 +146,14 @@ namespace distribution {
 		}
 
 		double k = get_K(nu);
-		double sigma2 = 1.0 + (2.0 * phi(nu) * (nu * nu + 2.0) / nu * nu * nu * k);
+		double sigma2 = 1.0 + ((2.0 * phi(nu) * (nu * nu + 2.0)) / (nu * nu * nu * k));
 		double sigma4 = sigma2 * sigma2;
 
 		double a = 24.0 / (nu * nu * nu * nu * nu);
 		double b = 24.0 / (nu * nu * nu);
 		double c = 12.0 / nu;
 
-		double gamma2 = (1.0 / sigma4 * k) * (3.0 * (2.0 * Phi(nu) - 1) + 2.0 * phi(nu) * (a + b + c + nu)) - 3.0;
+		double gamma2 = (1.0 / (sigma4 * k)) * (3.0 * (2.0 * Phi(nu) - 1) + 2.0 * phi(nu) * (a + b + c + nu)) - 3.0;
 		return gamma2;
 	}
 }
