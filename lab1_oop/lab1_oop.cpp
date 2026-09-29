@@ -29,7 +29,7 @@ static void plot_density(int flag, double x, double nu1, double mu1, double lam1
 	cout << "Building density plot..." << endl;
 	int ret = system(cmd.str().c_str());
 	if (ret != 0) {
-		cout << "Warning: plot.py returned code " << ret
+		cout << "Error: plot.py returned code " << ret
 			<< " (is python3/matplotlib available? is plot.py in cwd?)" << endl;
 	}
 }
@@ -42,7 +42,7 @@ int main() {
 
 	while (!exit_flag) {
 
-		cout << endl << "8: Huber`s distribution" << endl;
+		cout << endl << "--- Huber`s distribution ---" << endl;
 		cout << "1. Test primary distribution" << endl;
 		cout << "2. Test mixed distribution" << endl;
 		cout << "3. Test empirical distribution" << endl;
@@ -79,7 +79,7 @@ int test_normal() {
 	cout << endl << "1. Standart test set (data from table)" << endl;
 	cout << "2. Input from keyboard" << endl;
 	cout << "3. Exit" << endl;
-	cout << "Enter your choice: " << endl; cin >> switcher;
+	cout << "Enter your choice: " << endl; cin >> switcher; cout << endl;
 
 	if (cin.fail()) {
 		cin.clear();
@@ -124,8 +124,7 @@ int test_normal() {
 				<< endl << endl;
 
 			plot_density(0, x, nu, mu, lam, 0, 0, 0, 0);
-
-
+			cout << endl;
 
 			lam = 2.0; nu = 1.5;
 			cout << "2. Scale test. Data:" << endl;
@@ -155,8 +154,7 @@ int test_normal() {
 				<< endl << endl;
 			
 			plot_density(0, x, nu, mu, lam, 0, 0, 0, 0);
-
-
+			cout << endl;
 
 			mu = 2.0; lam = 2.0; nu = 3.0; x = mu;
 			cout << "3. Shift-scale test. Data:" << endl;
@@ -186,6 +184,7 @@ int test_normal() {
 				<< endl;
 
 			plot_density(0, x, nu, mu, lam, 0, 0, 0, 0);
+			cout << endl;
 
 			return 1;
 		}
@@ -269,7 +268,7 @@ int test_mixed() {
 				<< mix_distribution::get_excess(nu1, mu1, lam1, nu2, mu2, lam2, p) << endl << endl;
 
 			plot_density(1, x, nu1, mu1, lam1, nu2, mu2, lam2, p);
-
+			cout << endl;
 
 			mu1 = 0.0; mu2 = 2.0; lam1 = lam2 = 1.0; nu1 = nu2 = 2.0; p = 0.75; x = 0.0;
 			cout << "Shift transformation. Data:" << endl;
@@ -294,7 +293,7 @@ int test_mixed() {
 				<< mix_distribution::get_excess(nu1, mu1, lam1, nu2, mu2, lam2, p) << endl << endl;
 
 			plot_density(1, x, nu1, mu1, lam1, nu2, mu2, lam2, p);
-
+			cout << endl;
 
 			mu1 = mu2 = 0.0; lam1 = 1.0; lam2 = 3.0; nu1 = nu2 = 2.5; p = 0.5;
 			cout << "Scale transformation. Data:" << endl;
@@ -319,7 +318,7 @@ int test_mixed() {
 				<< mix_distribution::get_excess(nu1, mu1, lam1, nu2, mu2, lam2, p) << endl << endl;
 
 			plot_density(1, x, nu1, mu1, lam1, nu2, mu2, lam2, p);
-
+			cout << endl;
 
 			mu1 = mu2 = 0.0; lam1 = lam2 = 1.0; nu1 = 1.0; nu2 = 2.0; p = 0.5;
 			cout << "Different shape transformation. Data:" << endl;
@@ -344,7 +343,7 @@ int test_mixed() {
 				<< mix_distribution::get_excess(nu1, mu1, lam1, nu2, mu2, lam2, p) << endl;
 
 			plot_density(1, x, nu1, mu1, lam1, nu2, mu2, lam2, p);
-
+			cout << endl;
 
 			return 1;
 		}
