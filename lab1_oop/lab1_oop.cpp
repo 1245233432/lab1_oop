@@ -274,7 +274,8 @@ int test_mixed() {
 			cout << "Shift transformation. Data:" << endl;
 			cout << "Argument x = " << x << endl;
 			cout << "Shape parameters nu1 = nu2 = " << nu1 << endl;
-			cout << "Shift parameters mu1 = mu2 = " << mu1 << endl;
+			cout << "Shift parameters mu1 = " << mu1 << endl;
+			cout << "Shift parameters mu2 = " << mu2 << endl;
 			cout << "Scale parameters lambda1 = lambda2 = " << lam1 << endl;
 			cout << "Mixture parameter p = " << p << endl << endl;
 
@@ -300,7 +301,8 @@ int test_mixed() {
 			cout << "Argument x = " << x << endl;
 			cout << "Shape parameters nu1 = nu2 = " << nu1 << endl;
 			cout << "Shift parameters mu1 = mu2 = " << mu1 << endl;
-			cout << "Scale parameters lambda1 = lambda2 = " << lam1 << endl;
+			cout << "Scale parameters lambda1 = " << lam1 << endl;
+			cout << "Scale parameters lambda2 = " << lam2 << endl;
 			cout << "Mixture parameter p = " << p << endl << endl;
 
 			cout << "Results:" << endl;
@@ -323,7 +325,8 @@ int test_mixed() {
 			mu1 = mu2 = 0.0; lam1 = lam2 = 1.0; nu1 = 1.0; nu2 = 2.0; p = 0.5;
 			cout << "Different shape transformation. Data:" << endl;
 			cout << "Argument x = " << x << endl;
-			cout << "Shape parameters nu1 = nu2 = " << nu1 << endl;
+			cout << "Shape parameters nu1 = " << nu1 << endl;
+			cout << "Shape parameters nu2 = " << nu2 << endl;
 			cout << "Shift parameters mu1 = mu2 = " << mu1 << endl;
 			cout << "Scale parameters lambda1 = lambda2 = " << lam1 << endl;
 			cout << "Mixture parameter p = " << p << endl << endl;
