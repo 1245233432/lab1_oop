@@ -4,7 +4,7 @@
 
 #include <iostream>
 #include <ctime>
-#include <limits> // для очистки потока ввода cin
+#include <limits> //  для очистки потока ввода cin
 #include <vector>
 #include <cstdlib>
 #include <string>
