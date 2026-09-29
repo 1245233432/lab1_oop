@@ -310,11 +310,56 @@ int test_mixed() {
 		}
 
 		case 2: {
+			cout << "Enter value of x: "; cin >> x;
 
+			cout << "Enter value of shape parameter ν1 (ν1 > 0): "; cin >> nu1;
+			if (nu1 <= 0) {
+				cout << "Incorrect value of ν1 (must be grater then 0)" << endl;
+				return 0;
+			}
+
+			cout << "Enter value of shape parameter ν2 (ν2 > 0): "; cin >> nu2;
+			if (nu2 <= 0) {
+				cout << "Incorrect value of ν2 (must be grater then 0)" << endl;
+				return 0;
+			}
+
+			cout << "Enter value of shift parameter μ1: "; cin >> mu1;
+			cout << "Enter value of shift parameter μ2: "; cin >> mu2;
+
+			cout << "Enter value of scale parameter λ1 (λ1 > 0): "; cin >> lam1;
+			if (lam1 <= 0) {
+				cout << "Incorrect value of λ1 (must be grater then 0)";
+				return 0;
+			}
+
+			cout << "Enter value of scale parameter λ2 (λ2 > 0): "; cin >> lam1;
+			if (lam1 <= 0) {
+				cout << "Incorrect value of λ2 (must be grater then 0)";
+				return 0;
+			}
+
+			cout << "Enter value of mixture parameter P (0 <= P <= 1): "; cin >> p;
+			if (p < 0 || p > 1) {
+				cout << "Incorrect value of P (0 <= P <= 1)";
+				return 0;
+			}
+
+			cout << "Results:" << endl;
+			cout << "Density:            f(x) = "
+				<< mix_distribution::get_density(x, nu1, mu1, lam1, nu2, mu2, lam2, p) << endl;
+			cout << "Expected value:     M[ξ] = "
+				<< mix_distribution::get_expected_value(nu1, mu1, lam1, nu2, mu2, lam2, p) << endl;
+			cout << "Dispersion:         D[ξ] = "
+				<< mix_distribution::get_dispersion(nu1, mu1, lam1, nu2, mu2, lam2, p) << endl;
+			cout << "Asymmetry coef.:      γ1 = "
+				<< mix_distribution::get_asymmetry(nu1, mu1, lam1, nu2, mu2, lam2, p) << endl;
+			cout << "Excess coef.:         γ2 = "
+				<< mix_distribution::get_excess(nu1, mu1, lam1, nu2, mu2, lam2, p) << endl;
 		}
 
 		case 3: {
-
+			return 0;
 		}
 
 		default:
