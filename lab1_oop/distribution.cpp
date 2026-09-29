@@ -145,7 +145,7 @@ namespace distribution {
 			throw invalid_argument("Parameter lambda must be grater then 0");
 		}
 
-		double K = get_K(nu);
+		double k = get_K(nu);
 		double sigma2 = 1.0 + (2.0 * phi(nu) * (nu * nu + 2.0) / nu * nu * nu * k);
 		double sigma4 = sigma2 * sigma2;
 

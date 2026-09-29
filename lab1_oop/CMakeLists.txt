@@ -3,7 +3,11 @@
 #
 
 # Добавьте источник в исполняемый файл этого проекта.
-add_executable (lab1_oop "lab1_oop.cpp" "lab1_oop.h")
+add_executable (lab1_oop 
+"lab1_oop.cpp" 
+#"lab1_oop.h"
+"distribution.cpp"
+"mix_distribution.cpp")
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET lab1_oop PROPERTY CXX_STANDARD 20)

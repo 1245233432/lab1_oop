@@ -14,7 +14,7 @@
 
 int test_normal();
 int test_mixed();
-int test_empiric();
+//int test_empiric();
 
 using namespace std;
 
@@ -47,7 +47,7 @@ int main() {
 		switch (switcher) {
 		case 1: test_normal(); break;
 		case 2: test_mixed(); break;
-		case 3: test_empiric(); break;
+		//case 3: test_empiric(); break;
 		case 4: exit_flag = true; break;
 		deafult: cout << "Wrong input" << endl; break;
 		}
@@ -333,8 +333,8 @@ int test_mixed() {
 				return 0;
 			}
 
-			cout << "Enter value of scale parameter λ2 (λ2 > 0): "; cin >> lam1;
-			if (lam1 <= 0) {
+			cout << "Enter value of scale parameter λ2 (λ2 > 0): "; cin >> lam2;
+			if (lam2 <= 0) {
 				cout << "Incorrect value of λ2 (must be grater then 0)";
 				return 0;
 			}

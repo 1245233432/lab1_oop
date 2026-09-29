@@ -107,6 +107,6 @@ namespace mix_distribution {
 			+ 4.0 * gamma1_2 * pow(D2, 1.5) * (M2 - M)
 			+ D2 * D2 * (gamma2_2 + 3));
 
-		return ((a + b) / pow(D, 2)) - 3
+		return ((a + b) / pow(D, 2)) - 3;
 	}
 }
