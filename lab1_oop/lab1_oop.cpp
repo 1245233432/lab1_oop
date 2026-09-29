@@ -153,7 +153,7 @@ int test_normal() {
 			cout << "P{x in central interval} =  " << distribution::get_P(nu)
 				<< "; expected: 0.834"
 				<< endl << endl;
-
+			
 			plot_density(0, x, nu, mu, lam, 0, 0, 0, 0);
 
 

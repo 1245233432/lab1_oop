@@ -62,7 +62,7 @@ def main():
         plt.plot(xs, ys, color="blue", linewidth=2,
                  label=f"Huber  ν={nu1}, μ={mu1}, λ={lam1}")
         y_mark = huber_density(x_mark, nu1, mu1, lam1)
-        title = f"Плотность Хьюбера  (ν={nu1}, μ={mu1}, λ={lam1})"
+        title = f"Хьюбер  (ν={nu1}, μ={mu1}, λ={lam1})"
     else:
         ys = [mix_density(xi, nu1, mu1, lam1, nu2, mu2, lam2, p) for xi in xs]
         plt.plot(xs, ys, color="blue", linewidth=2,
