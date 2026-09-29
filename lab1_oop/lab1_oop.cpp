@@ -20,7 +20,7 @@ using namespace std;
 
 static void plot_density(int flag, double x, double nu1, double mu1, double lam1, double nu2, double mu2, double lam2, double p) {
 	ostringstream cmd;
-	cmd << "python plot.py "
+	cmd << "\"C:\\Users\\Stepan\\AppData\\Local\\Programs\\Python\\Python314\\python.exe\" plot.py "
 		<< flag << " "
 		<< x << " "
 		<< nu1 << " " << mu1 << " " << lam1 << " "
