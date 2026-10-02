@@ -18,19 +18,53 @@ int test_empiric();
 
 using namespace std;
 
+// запускает "<python_launcher> <args>", перебирая несколько вариантов названия
+// интерпретатора (а не жёстко заданный путь к python.exe на одном конкретном
+// компьютере), чтобы построение графиков работало на любой машине, где
+// установлен Python с matplotlib и он прописан в PATH
+static bool run_python(const string& args) {
+	static const char* launchers[] = { "python", "python3", "py" };
+	for (const char* launcher : launchers) {
+		ostringstream cmd;
+		cmd << launcher << " " << args;
+		int ret = system(cmd.str().c_str());
+		if (ret == 0) {
+			return true;
+		}
+	}
+	return false;
+}
+
 static void plot_density(int flag, double x, double nu1, double mu1, double lam1, double nu2, double mu2, double lam2, double p) {
-	ostringstream cmd;
-	cmd << "\"C:\\Users\\Stepan\\AppData\\Local\\Programs\\Python\\Python314\\python.exe\" plot.py "
+	ostringstream args;
+	args << "plot.py "
 		<< flag << " "
 		<< x << " "
 		<< nu1 << " " << mu1 << " " << lam1 << " "
 		<< nu2 << " " << mu2 << " " << lam2 << " "
 		<< p;
 	cout << "Building density plot..." << endl;
-	int ret = system(cmd.str().c_str());
-	if (ret != 0) {
-		cout << "Error: plot.py returned code " << ret
-			<< " (is python3/matplotlib available? is plot.py in cwd?)" << endl;
+	if (!run_python(args.str())) {
+		cout << "Error: could not run plot.py (tried python/python3/py)"
+			<< " - is Python with matplotlib installed and available in PATH? is plot.py in the working directory?" << endl;
+	}
+}
+
+// построение графика эмпирической плотности (ступенчатая гистограмма) вместе
+// с теоретической плотностью по CSV-файлу с точками выборки (см. plot_empiric.py);
+// для основного распределения nu2 = mu2 = lam2 = p = 0 (не используются)
+static void plot_empiric_density(const string& mode, const string& csv_path,
+	double nu1, double mu1, double lam1,
+	double nu2 = 0.0, double mu2 = 0.0, double lam2 = 0.0, double p = 0.0) {
+	ostringstream args;
+	args << "plot_empiric.py " << mode << " " << csv_path << " " << nu1 << " " << mu1 << " " << lam1;
+	if (mode != "primary") {
+		args << " " << nu2 << " " << mu2 << " " << lam2 << " " << p;
+	}
+	cout << "Building empirical density plot..." << endl;
+	if (!run_python(args.str())) {
+		cout << "Error: could not run plot_empiric.py (tried python/python3/py)"
+			<< " - is Python with matplotlib installed and available in PATH? is plot_empiric.py in the working directory?" << endl;
 	}
 }
 
@@ -497,6 +531,8 @@ int test_empiric() {
 				fout1.close();
 				cout << "Theoretical and empirical density values at the sample points (n = " << small_sample.size()
 					<< ") saved to empiric_points_primary.csv - use it to build the combined plot (p. 5 of the assignment)" << endl;
+
+				plot_empiric_density("primary", "empiric_points_primary.csv", nu, mu, lam);
 			}
 			cout << endl;
 
@@ -582,6 +618,8 @@ int test_empiric() {
 				fout2.close();
 				cout << "Theoretical and empirical density values at the sample points (n = " << small_mix_sample.size()
 					<< ") saved to empiric_points_mixed.csv - use it to build the combined plot (p. 5 of the assignment)" << endl;
+
+				plot_empiric_density("mixed", "empiric_points_mixed.csv", nu1, mu1, lam1, nu2, mu2, lam2, p);
 			}
 			cout << endl;
 
@@ -634,6 +672,9 @@ int test_empiric() {
 			vector<double> sample(n);
 			double M_theor, D_theor, g1_theor, g2_theor;
 
+			string mode; // для последующего построения графика (primary/mixed)
+			double p_nu1 = 0, p_mu1 = 0, p_lam1 = 0, p_nu2 = 0, p_mu2 = 0, p_lam2 = 0, p_p = 0;
+
 			if (dist_switcher == 1) {
 				double nu, mu, lam;
 				cout << "Enter value of shape parameter nu (nu > 0): "; cin >> nu;
@@ -656,6 +697,9 @@ int test_empiric() {
 				D_theor = distribution::get_dispersion(nu, mu, lam);
 				g1_theor = distribution::get_asymmetry(nu, mu, lam);
 				g2_theor = distribution::get_excess(nu, mu, lam);
+
+				mode = "primary";
+				p_nu1 = nu; p_mu1 = mu; p_lam1 = lam;
 			}
 			else {
 				double nu1, mu1, lam1, nu2, mu2, lam2, p;
@@ -680,6 +724,10 @@ int test_empiric() {
 				D_theor = mix_distribution::get_dispersion(nu1, mu1, lam1, nu2, mu2, lam2, p);
 				g1_theor = mix_distribution::get_asymmetry(nu1, mu1, lam1, nu2, mu2, lam2, p);
 				g2_theor = mix_distribution::get_excess(nu1, mu1, lam1, nu2, mu2, lam2, p);
+
+				mode = "mixed";
+				p_nu1 = nu1; p_mu1 = mu1; p_lam1 = lam1;
+				p_nu2 = nu2; p_mu2 = mu2; p_lam2 = lam2; p_p = p;
 			}
 
 			double M_emp = empiric_distribution::get_expected_value(sample);
@@ -695,6 +743,25 @@ int test_empiric() {
 			cout << "Empirical gamma2* = " << g2_emp << "; theoretical gamma2 = " << g2_theor << endl;
 			cout << "Empirical density at x = X_min: f*(X_min) = "
 				<< empiric_distribution::get_density(empiric_distribution::get_min(sample), sample, k) << endl << endl;
+
+			// сохранение точек выборки для построения графика (п. 5 задания)
+			ofstream fout3("empiric_points_keyboard.csv");
+			if (!fout3) {
+				cout << "Warning: could not open empiric_points_keyboard.csv for writing" << endl;
+			}
+			else {
+				fout3 << "x,f_theor,f_emp" << endl;
+				for (int i = 0; i < n; i++) {
+					double xv = sample[i];
+					double f_theor = (mode == "primary")
+						? distribution::get_density(xv, p_nu1, p_mu1, p_lam1)
+						: mix_distribution::get_density(xv, p_nu1, p_mu1, p_lam1, p_nu2, p_mu2, p_lam2, p_p);
+					double f_emp = empiric_distribution::get_density(xv, sample, k);
+					fout3 << xv << "," << f_theor << "," << f_emp << endl;
+				}
+				fout3.close();
+				plot_empiric_density(mode, "empiric_points_keyboard.csv", p_nu1, p_mu1, p_lam1, p_nu2, p_mu2, p_lam2, p_p);
+			}
 
 			// п. 3.3.2: новая выборка того же объема по эмпирическому распределению полученной выборки
 			vector<double> new_sample = empiric_distribution::get_random_sample(sample, n);
